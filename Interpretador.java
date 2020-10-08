@@ -1,5 +1,6 @@
 import java.util.Scanner;
 import java.io.File;
+import java.util.Stack;
 
 public class Interpretador {
 
@@ -45,7 +46,8 @@ public class Interpretador {
         }
     }
 
-    public boolean compilaLinha(String linha) {
+    public boolean compilar(String linha) {
+        Stack<String> pilha = new Stack();
         for (int i = 0; i < linha.length(); i++) {
             switch (linha.charAt(i)) {
                 case '>':
@@ -61,14 +63,35 @@ public class Interpretador {
                     this.memoria[this.ponteiroDados] -= 1;
                     break;
                 case '[':
+                    pilha.push("[");
+                    if (this.memoria[this.ponteiroDados] == 0) {
+                        int j = i;
+                        while (!pilha.isEmpty()) {
+                            if (linha.charAt(j) == '[') {
+                                pilha.push("[");
+                            } else if (linha.charAt(j) == ']') {
+                                pilha.pop();
+                            }
+                            j++;
+                        }
+                        i = j;
+                    }
                     break;
                 case ']':
+                    pilha.pop();
+                    if (this.memoria[this.ponteiroDados] != 0) {
+                        int j = i;
+                        while (linha.charAt(j) != '[') {
+                            j--;
+                        }
+                        i = --j;
+                    }
                     break;
                 case ',':
                     this.memoria[this.ponteiroDados] = this.arquivoIn.nextInt();
                     break;
                 case '.':
-                    
+                    System.out.println(this.memoria[this.ponteiroDados]);
                     break;
                 case '$':
                     encerrar();

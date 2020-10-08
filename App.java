@@ -8,13 +8,15 @@ public class App {
             Interpretador interpretador = new Interpretador();
             File arquivo = new File("./SOURCE.txt");
             Scanner sc = new Scanner(arquivo);
+            String program = "";
             while (sc.hasNext()) {
                 String linha = sc.nextLine();
                 if (linha.charAt(0) != '%') {
                     //System.out.print(linha);
-                    interpretador.compilaLinha(linha);
+                    program += linha;
                 }
             }
+            interpretador.compilar(program);
             sc.close();
             pause();
         } catch (Exception e) {
