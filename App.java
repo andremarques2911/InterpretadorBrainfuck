@@ -6,7 +6,7 @@ public class App {
     public static void main(String[] args) throws Exception {
         try {
             Interpretador interpretador = new Interpretador();
-            File arquivo = new File("./SOURCE.txt");
+            File arquivo = new File("./Hello.b");
             Scanner sc = new Scanner(arquivo);
             String program = "";
             while (sc.hasNext()) {
@@ -20,7 +20,6 @@ public class App {
             sc.close();
             pause();
         } catch (Exception e) {
-            //TODO: handle exception
             throw new Exception(e);
         }
     }

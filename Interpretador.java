@@ -1,5 +1,7 @@
 import java.util.Scanner;
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Stack;
 
 public class Interpretador {
@@ -20,7 +22,7 @@ public class Interpretador {
     }
 
     private void limpaMemoria() {
-        for(int i = 0; i < this.TAMANHO_MEMORIA; i++) {
+        for (int i = 0; i < this.TAMANHO_MEMORIA; i++) {
             this.memoria[i] = 0;
         }
     }
@@ -30,7 +32,7 @@ public class Interpretador {
             File arquivo = new File("./IN.txt");
             this.arquivoIn = new Scanner(arquivo);
         } catch (Exception e) {
-            //TODO: handle exception
+            // TODO: handle exception
             throw new Exception(e);
         }
     }
@@ -42,14 +44,18 @@ public class Interpretador {
 
     private void printMemoria() {
         for (int i = 0; i < this.TAMANHO_MEMORIA; i++) {
-            System.out.print( this.memoria[i] + "\t");
-            if (i != 0 && i % 8 == 0) System.out.println();
+            System.out.print(this.memoria[i] + "\t");
+            if (i != 0 && i % 8 == 0)
+                System.out.println();
         }
     }
 
-    public boolean compilar(String linha) {
-        for (int i = 0; i < linha.length(); i++) {
-            switch (linha.charAt(i)) {
+    public boolean compilar(String linha) throws IOException {
+        FileWriter writer = new FileWriter("./OF.txt", true);
+        // int cont = 0;
+        for (; ponteiroPrograma < linha.length(); ponteiroPrograma++) {
+            // cont++;
+            switch (linha.charAt(ponteiroPrograma)) {
                 case '>':
                     this.ponteiroDados++;
                     break;
@@ -67,12 +73,11 @@ public class Interpretador {
                     pilha.push("[");
                     if (this.memoria[this.ponteiroDados] == 0) {
                         while (!pilha.isEmpty()) {
-                            if (linha.charAt(i) == '[') {
+                            if (linha.charAt(ponteiroPrograma) == '[') {
                                 pilha.push("[");
-                            } else if (linha.charAt(i) == ']') {
+                            } else if (linha.charAt(ponteiroPrograma) == ']') {
                                 pilha.pop();
                             }
-                            i++;
                         }
                     }
                     break;
@@ -87,14 +92,14 @@ public class Interpretador {
                         // i = --j;
 
                         int count = 1;
-                        i--;
+                        ponteiroPrograma--;
                         while (count > 0) {
-                            if (linha.charAt(i) == ']') {
+                            if (linha.charAt(ponteiroPrograma) == ']') {
                                 count++;
-                            } else if (linha.charAt(i) == '[') {
+                            } else if (linha.charAt(ponteiroPrograma) == '[') {
                                 count--;
                             }
-                            i--;
+                            ponteiroPrograma--;
                         }
 
                         // System.out.println(i);
@@ -116,9 +121,11 @@ public class Interpretador {
                     this.memoria[this.ponteiroDados] = this.arquivoIn.nextInt();
                     break;
                 case '.':
-                    System.out.println(this.memoria[this.ponteiroDados]);
+                    // this.memoria[this.ponteiroDados]
+                    writer.write(this.memoria[this.ponteiroDados]);
                     break;
                 case '$':
+                    writer.close();
                     encerrar();
                     break;
                 default:
