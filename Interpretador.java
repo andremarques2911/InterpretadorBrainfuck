@@ -12,6 +12,7 @@ public class Interpretador {
     private int ponteiroDados;
     private int ponteiroPrograma;
     private Scanner arquivoIn;
+    FileWriter writer = new FileWriter("./OF.txt", true);
 
     public Interpretador() throws Exception {
         this.memoria = new int[this.TAMANHO_MEMORIA];
@@ -37,21 +38,20 @@ public class Interpretador {
         }
     }
 
-    private void encerrar() {
+    private void encerrar() throws IOException {
         this.arquivoIn.close();
         printMemoria();
     }
 
-    private void printMemoria() {
+    private void printMemoria() throws IOException {
         for (int i = 0; i < this.TAMANHO_MEMORIA; i++) {
-            System.out.print(this.memoria[i] + "\t");
+            writer.write(this.memoria[i] + "\t");
             if (i != 0 && i % 8 == 0)
                 System.out.println();
         }
     }
 
     public boolean compilar(String linha) throws IOException {
-        FileWriter writer = new FileWriter("./OF.txt", true);
         // int cont = 0;
         for (; ponteiroPrograma < linha.length(); ponteiroPrograma++) {
             // cont++;
