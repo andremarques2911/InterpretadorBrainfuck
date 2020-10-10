@@ -11,7 +11,7 @@ public class Interpretador {
     private int ponteiroPrograma;
     private Scanner arquivoIn;
 
-    public Interpretador() {
+    public Interpretador() throws Exception {
         this.memoria = new int[this.TAMANHO_MEMORIA];
         this.ponteiroDados = 0;
         this.ponteiroPrograma = 0;
@@ -25,12 +25,13 @@ public class Interpretador {
         }
     }
 
-    private void leArquivoIN() {
+    private void leArquivoIN() throws Exception {
         try {
             File arquivo = new File("./IN.txt");
             this.arquivoIn = new Scanner(arquivo);
         } catch (Exception e) {
             //TODO: handle exception
+            throw new Exception(e);
         }
     }
 
@@ -47,7 +48,6 @@ public class Interpretador {
     }
 
     public boolean compilar(String linha) {
-        Stack<String> pilha = new Stack();
         for (int i = 0; i < linha.length(); i++) {
             switch (linha.charAt(i)) {
                 case '>':
@@ -63,28 +63,53 @@ public class Interpretador {
                     this.memoria[this.ponteiroDados] -= 1;
                     break;
                 case '[':
+                    Stack<String> pilha = new Stack();
                     pilha.push("[");
                     if (this.memoria[this.ponteiroDados] == 0) {
-                        int j = i;
                         while (!pilha.isEmpty()) {
-                            if (linha.charAt(j) == '[') {
+                            if (linha.charAt(i) == '[') {
                                 pilha.push("[");
-                            } else if (linha.charAt(j) == ']') {
+                            } else if (linha.charAt(i) == ']') {
                                 pilha.pop();
                             }
-                            j++;
+                            i++;
                         }
-                        i = j;
                     }
                     break;
                 case ']':
-                    pilha.pop();
+                    // Stack<String> pilhaVolta = new Stack();
+                    // pilhaVolta.push("]");
                     if (this.memoria[this.ponteiroDados] != 0) {
-                        int j = i;
-                        while (linha.charAt(j) != '[') {
-                            j--;
+                        // int j = i;
+                        // while (linha.charAt(j) != '[') {
+                        //     j--;
+                        // }
+                        // i = --j;
+
+                        int count = 1;
+                        i--;
+                        while (count > 0) {
+                            if (linha.charAt(i) == ']') {
+                                count++;
+                            } else if (linha.charAt(i) == '[') {
+                                count--;
+                            }
+                            i--;
                         }
-                        i = --j;
+
+                        // System.out.println(i);
+                        // while (!pilhaVolta.isEmpty()) {
+                        //     if (i < linha.length()) {
+                        //         if (linha.charAt(i) == ']') {
+                        //             pilhaVolta.push("]");
+                        //         } else if (linha.charAt(i) == '[') {
+                        //             pilhaVolta.pop();
+                        //         }
+                        //         i++;    
+                        //     } else {
+                        //         break;
+                        //     }    
+                        // }
                     }
                     break;
                 case ',':

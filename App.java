@@ -3,7 +3,7 @@ import java.io.File;
 import java.io.IOException;
 
 public class App {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
         try {
             Interpretador interpretador = new Interpretador();
             File arquivo = new File("./SOURCE.txt");
@@ -21,6 +21,7 @@ public class App {
             pause();
         } catch (Exception e) {
             //TODO: handle exception
+            throw new Exception(e);
         }
     }
 
