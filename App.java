@@ -11,14 +11,14 @@ public class App {
             String program = "";
             while (sc.hasNext()) {
                 String linha = sc.nextLine();
-                if (linha.charAt(0) != '%') {
+                if (!linha.equals("") && linha.charAt(0) != '%') {
                     //System.out.print(linha);
                     program += linha;
                 }
             }
             interpretador.compilar(program);
             sc.close();
-            pause();
+            //pause();
         } catch (Exception e) {
             throw new Exception(e);
         }
