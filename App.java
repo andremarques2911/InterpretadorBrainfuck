@@ -12,22 +12,13 @@ public class App {
             while (sc.hasNext()) {
                 String linha = sc.nextLine();
                 if (!linha.equals("") && linha.charAt(0) != '%') {
-                    //System.out.print(linha);
                     program += linha;
                 }
             }
             interpretador.compilar(program);
             sc.close();
-            //pause();
         } catch (Exception e) {
             throw new Exception(e);
         }
-    }
-
-    private static void pause() throws IOException {
-        System.out.println();
-        System.out.println("Pressione Enter para continuar...");
-        System.in.read();
-        System.out.println("Fim.");
     }
 }

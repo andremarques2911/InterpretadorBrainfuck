@@ -33,18 +33,17 @@ public class Interpretador {
     private void criaFileIN() throws Exception {
         Random rand = new Random();
         File arquivo = new File("./arquivos/IN.txt");
-        if (arquivo.exists()) {
-            arquivo.delete();
-        }
-        FileWriter fw = new FileWriter("./arquivos/IN.txt", true);
-        final int NR_LINHAS = 50;
-        for (int i = 0; i < NR_LINHAS; i++) {
-            fw.write(String.valueOf(rand.nextInt(256)));
-            if (i < NR_LINHAS - 1) {
-                fw.write("\n");
+        if (!arquivo.exists()) {
+            FileWriter fw = new FileWriter("./arquivos/IN.txt", true);
+            final int NR_LINHAS = 50;
+            for (int i = 0; i < NR_LINHAS; i++) {
+                fw.write(String.valueOf(rand.nextInt(256)));
+                if (i < NR_LINHAS - 1) {
+                    fw.write("\n");
+                }
             }
+            fw.close();   
         }
-        fw.close();
         this.arquivoIn = new Scanner(arquivo);
     }
     
@@ -66,11 +65,8 @@ public class Interpretador {
     private void printMemoria() throws IOException {
         this.writer.write("\n");
         for (int i = 0; i < this.TAMANHO_MEMORIA; i++) {
-            // writer.write(this.memoria[i] + "\t");
             this.writer.write(this.memoria[i] + "\t");
-            //System.out.print(this.memoria[i] + "\t");
             if (i != 0 && i % 10 == 0)
-                //System.out.println();
                 this.writer.write("\n");
         }
     }
@@ -121,13 +117,8 @@ public class Interpretador {
                     this.memoria[this.ponteiroDados] = (byte) this.arquivoIn.nextInt();
                     break;
                 case '.':
-                    // this.memoria[this.ponteiroDados]
                     this.writer.write(this.memoria[this.ponteiroDados]);
                     break;
-//                case '$':
-//                    writer.close();
-//                    encerrar();
-//                    break;
                 default:
                     break;
             }
