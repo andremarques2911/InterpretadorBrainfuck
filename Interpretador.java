@@ -3,6 +3,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Stack;
+import java.util.Random;
 
 public class Interpretador {
 
@@ -19,16 +20,8 @@ public class Interpretador {
         this.ponteiroDados = 0;
         this.ponteiroPrograma = 0;
         limpaMemoria();
-        leArquivoIN();
+        criaFileIN();
         criaFileOF();
-    }
-
-    private void criaFileOF() throws Exception {
-        File file = new File("./OF.txt");
-        if (file.exists()) {
-            file.delete();
-        }
-        this.writer = new FileWriter("./OF.txt", true);
     }
 
     private void limpaMemoria() {
@@ -37,14 +30,30 @@ public class Interpretador {
         }
     }
 
-    private void leArquivoIN() throws Exception {
-        try {
-            File arquivo = new File("./IN.txt");
-            this.arquivoIn = new Scanner(arquivo);
-        } catch (Exception e) {
-            // TODO: handle exception
-            throw new Exception(e);
+    private void criaFileIN() throws Exception {
+        Random rand = new Random();
+        File arquivo = new File("./arquivos/IN.txt");
+        if (arquivo.exists()) {
+            arquivo.delete();
         }
+        FileWriter fw = new FileWriter("./arquivos/IN.txt", true);
+        final int NR_LINHAS = 50;
+        for (int i = 0; i < NR_LINHAS; i++) {
+            fw.write(String.valueOf(rand.nextInt(256)));
+            if (i < NR_LINHAS - 1) {
+                fw.write("\n");
+            }
+        }
+        fw.close();
+        this.arquivoIn = new Scanner(arquivo);
+    }
+    
+    private void criaFileOF() throws Exception {
+        File file = new File("./arquivos/OF.txt");
+        if (file.exists()) {
+            file.delete();
+        }
+        this.writer = new FileWriter("./arquivos/OF.txt", true);
     }
 
     private void encerrar() throws IOException {

@@ -6,7 +6,7 @@ public class App {
     public static void main(String[] args) throws Exception {
         try {
             Interpretador interpretador = new Interpretador();
-            File arquivo = new File("./SOURCE.txt");
+            File arquivo = new File("./arquivos/SOURCE.txt");
             Scanner sc = new Scanner(arquivo);
             String program = "";
             while (sc.hasNext()) {
